@@ -121,6 +121,13 @@ enrich_age <- function(df) {
     select(-dob, -`Date of Birth`)
 }
 
+ensure_cols <- function(df, cols) {
+  for (col in cols) {
+    if (!col %in% names(df)) df[[col]] <- NA
+  }
+  df
+}
+
 RECIPIENT <- "pei-smartabase-profil-aaaatofucqgvfmyj2hort6lfe4@marlins.org.slack.com"
 
 
@@ -920,6 +927,8 @@ observe({
       distinct(about, `Scout Name`, .keep_all = TRUE) %>%
       select(-event_id)
 
+    df <- ensure_cols(df, c("Status", "Agent Name", "Signing Bonus"))
+
     # df <- enrich_age(df, lookup())
     df <- enrich_age(df)
 
@@ -1147,6 +1156,8 @@ observe({
       arrange(desc(event_id)) %>%
       distinct(about, .keep_all = TRUE) %>%
       select(-event_id)
+
+    ranked <- ensure_cols(ranked, c("Status", "Agent Name", "Signing Bonus"))
 
     # ranked <- enrich_age(ranked, lookup())
     ranked <- enrich_age(ranked)
