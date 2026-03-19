@@ -903,8 +903,9 @@ observe({
     req(!is.null(raw), nrow(raw) > 0)
 
     df <- raw %>%
-      select(about, Rank, `Date Last Seen`, Country, `Future Position`, `Scout Name`,
-             Age, UUID, `Date of Birth`, Status, `Agent Name`, `Signing Bonus`, event_id)
+      select(any_of(c("about", "Rank", "Date Last Seen", "Country", "Future Position",
+                       "Scout Name", "Age", "UUID", "Date of Birth", "Status",
+                       "Agent Name", "Signing Bonus", "event_id")))
 
     if (has_scouts) {
       df <- df %>% filter(`Scout Name` %in% input$review_scouts)
@@ -1140,9 +1141,9 @@ observe({
     
     ranked <- fresh_rankings %>%
       filter(`Scout Name` == input$rank_scout) %>%
-      select(about, user_id, Rank, `Date Last Seen`, Country,
-             `Future Position`, `Scout Name`, Age, UUID, `Date of Birth`,
-             Status, `Agent Name`, `Signing Bonus`, event_id) %>%
+      select(any_of(c("about", "user_id", "Rank", "Date Last Seen", "Country",
+                       "Future Position", "Scout Name", "Age", "UUID", "Date of Birth",
+                       "Status", "Agent Name", "Signing Bonus", "event_id"))) %>%
       arrange(desc(event_id)) %>%
       distinct(about, .keep_all = TRUE) %>%
       select(-event_id)
